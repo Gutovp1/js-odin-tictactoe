@@ -46,20 +46,27 @@ const displayController = (() =>{
     const markCell = (player) => {
         gameCells.forEach( (item, index) =>{
             item.addEventListener('click', e =>{
-                 gameEngine.playNow(index);
+                gameEngine.playNow(index);
                 updateBoard();
             });
         });
     };
-
+    
     const updateBoard = () =>{
         gameCells.forEach((item, index) => {
             item.textContent = gameBoard.gameboard.board[index];
         });
     };
+      
+    const turnMessage = function(turn) {    
+        if(turn)
+            playerTurn.textContent = "Player X's turn.";
+        else
+            playerTurn.textContent = "Player O's turn.";
+    };
 
     markCell();
-    return {gameCells, reset, resultMessage, markCell};
+    return {gameCells, reset, turnMessage, resultMessage};
 })();
 
 const gameEngine = (function(){
@@ -71,20 +78,25 @@ const gameEngine = (function(){
 
 
     const playNow = (index) => {
-        if(playerXTurn)
-            gameBoard.gameboard.board[index] = playerX.getMark();
-        else
-            gameBoard.gameboard.board[index] = playerO.getMark();
-    
+        //it plays only if the field is available.
+        if(gameBoard.gameboard.board[index] != null)
+            {return;}
+        (playerXTurn) ? gameBoard.gameboard.setCell(index, playerX.getMark()):gameBoard.gameboard.setCell(index, playerO.getMark());
+        
         if (round >=3){
             if(checkResult()){
                 return;
+            }
+            if(round == 9){
+                //draw
             }
         }    
         round++;
         
         //next player's turn
         playerXTurn = (playerXTurn == true) ? false : true;
+        displayController.turnMessage(playerXTurn);
+        // }
     };
     
     const checkResult = () => {
@@ -95,6 +107,12 @@ const gameEngine = (function(){
         }
     };
     
+    const nextPlayer = (turn)=>{
+        if(turn){
+            turn = false;
+            // displayController.
+        }
+    };
 
     return{playNow};
 
