@@ -11,7 +11,7 @@ const gameBoard = (function() {
             },
         resetB: function() {
             for(let i=0; i<this.board.length; i++){
-                this.board[i] = "";
+                this.board[i] = null;
             }
             }
         }
@@ -41,8 +41,10 @@ const displayController = (() =>{
         result.textContent = "Game Restarted";
     };
 
-    const resultMessage = function(winner){
-        result.textContent = "The winner is "+ winner+"!";    
+    const resultMessage = function(msg){
+        result.textContent = msg;  
+        result.style.color = ("orangered");
+        result.style.textShadow = ("1px 1px 0px black")  ;
     };
 
     const markCell = (player) => {
@@ -61,6 +63,10 @@ const displayController = (() =>{
     };
       
     const turnMessage = function(turn) {    
+        if(turn == "draw"){
+            playerTurn.textContent = "Restart the game.";
+            return;
+        }
         if(turn){
             playerTurn.textContent = "Player X's turn.";
         }
@@ -70,11 +76,9 @@ const displayController = (() =>{
     };
 
     btnReset.addEventListener('click', (e) => {
-       e.preventDefault();
        gameBoard.gameboard.resetB();
        gameEngine.resetEngine();
        resetDisplay();
-       markCell();
     });
 
     markCell();
@@ -100,15 +104,15 @@ const gameEngine = (function(){
         //check a possible winner from the 5th round on
         if (round >=5){
             if(checkResult()){
-                alert("oooover");
                 return; 
             }
-            // if(round == 9){
-            //     finished = true;
-            //     round=1;
-            //     //gameBoard.gameboard.reset();
-            //     //draw
-            // }
+            if(round >= 9){
+                finished = true;
+                round=1;
+                displayController.resultMessage("It is a draw.");
+                displayController.turnMessage("draw");
+                return;
+            }
         }    
         round++;
         
@@ -116,6 +120,7 @@ const gameEngine = (function(){
         playerXTurn = (playerXTurn == true) ? false : true;
         displayController.turnMessage(playerXTurn);
     }
+
     };
     
     const checkResult = () => {
@@ -140,11 +145,11 @@ const gameEngine = (function(){
         });
         winningConditions.forEach((wCondition)=> {
             if(wCondition.every(item => (XMarks.includes(item)))){
-                displayController.resultMessage("X"); 
+                displayController.resultMessage("The winner is player X!"); 
                 finished = true;
             }
             if(wCondition.every(item => (OMarks.includes(item)))){
-                displayController.resultMessage("O"); 
+                displayController.resultMessage("The winner is player O!"); 
                 finished = true;
             }
         });

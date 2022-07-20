@@ -10,7 +10,6 @@ body{
 }
 
 .gameboard{
-    /* align-content: center; */
     align-items: center;
 }
 
@@ -23,6 +22,7 @@ li{
     text-align: center;
     padding: 0;
     margin: 0;
+    gap: 10px;
 }
 
 ul{
@@ -35,6 +35,33 @@ ul{
     font-size: 100px;
 }
 
+ul:hover{
+    background-color: blue;
+}
+
+h1{
+    text-shadow: 2px 2px 0px black;
+    color: orange;    
+}
+
 h2{
     margin: 10px;
+    background-color: white;
+    color: darkslategrey;
+    box-shadow: 3px 3px 3px gray;    
+}
+
+button{
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    width: 1fr;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px rgb(98, 4, 117);    
+}
+
+button:hover{
+    background-color: white;
+    color: black;
 }
